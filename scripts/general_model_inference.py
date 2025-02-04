@@ -82,20 +82,25 @@ def inference(args):
     questions, answers, types = get_gsmplus()
     print(f'model: {args.model_name}\noutput_file: {args.output_file}\nckpt_path: {args.model_dir}\nsample: {len(questions)}\nnshots: {args.nshots}')
 
-    predictions = inference_vllm(args, raw_queries=questions, num_cpus=56, gpus=args.specify_your_gpus)
-    print('size of predictions: ', len(predictions))
+    print("pretend answers are predictions")
+    fake_predictions=answers
+    # predictions = inference_vllm(args, raw_queries=questions, num_cpus=56, gpus=args.specify_your_gpus)
+    # print('size of predictions: ', len(predictions))
 
     outputs = []
-    for idx, output in enumerate(predictions):
-        model_prediction = output.outputs[0].text
+
+    for idx, fake_pred in enumerate(fake_predictions):
+    # for idx, output in enumerate(predictions):
+        # model_prediction = output.outputs[0].text
         outputs.append({
             'idx': idx,
             'question': questions[idx],
             'answer': answers[idx],
             'type': types[idx],
             'model': args.model_name,
-            'model_prediction': model_prediction,
-            'prompt': output.prompt,
+            'model_prediction': fake_pred,
+            'prompt': fake_pred
+            # 'prompt': output.prompt,
         })
 
     if os.path.exists(args.output_file):

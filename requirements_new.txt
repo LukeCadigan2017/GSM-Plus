@@ -1,0 +1,47 @@
+#causes problems
+#simcse
+
+
+#foundational
+numpy
+pandas
+torch
+
+#obvious use
+transformers
+datasets
+
+#seems harmless
+tqdm
+func_timeout
+jsonlines
+
+
+python_dateutil
+regex
+
+
+#unfortunately used
+fraction
+sympy
+openai
+
+#multiprocess
+
+
+
+#maybe don't need
+# timeout_decorator==0.5.0
+# ray==2.9.3
+# requests==2.27.1
+# pebble==5.0.6
+
+#hopefully used in other areas (not us)
+#unclear why we need these
+# nltk==3.2.5
+# scikit_learn==1.4.1.post1
+# pot==0.9.3
+# wolframalpha==5.0.0
+
+# cvxpy==1.4.2
+# fire==0.5.0
