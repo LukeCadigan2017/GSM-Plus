@@ -15,7 +15,8 @@ from collections import defaultdict, Counter
 from fraction import Fraction
 import sys
 import os
-sys.path.append(os.getcwd().split("GSM-Plus")[0] + "GSM-Plus/")
+# sys.path.append(os.getcwd().split("GSM-Plus")[0] + "GSM-Plus/")
+sys.path.append(os.getcwd().split("/GSM-Plus")[0] + "/GSM-Plus/")
 from scripts.utils.prompt_template import pot_prompt_map_func
 
 

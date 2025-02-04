@@ -5,7 +5,8 @@ import argparse
 import logging
 import sys
 import os
-sys.path.append(os.getcwd().split("GSM-Plus")[0] + "GSM-Plus/")
+# sys.path.append(os.getcwd().split("/GSM-Plus")[0] + "/GSM-Plus/")
+sys.path.append(os.getcwd().split("/GSM-Plus")[0] + "/GSM-Plus/")
 from scripts.utils.extract_ans import get_gsmplus
 from scripts.utils.prompt_template import gsm8k_nshot_prompt, gsm8k_nshot_prompt_pot, gsm8k_nshots_ltm_solution_best, gsm8k_1shot_ltm_1, gsm8k_complex_cot, gsm8k_contrastive_cot
 
