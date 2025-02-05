@@ -57,8 +57,11 @@ def inference_vllm(args, raw_queries, batch_size=1, num_cpus=56, gpus='0,1,2,3')
     ray.init(num_cpus=num_cpus, num_gpus=num_gpus, ignore_reinit_error=True)
     logging.info('>>>>>> ray initialized')
 
+
+    
     llm = LLM(model=args.model_dir,
-              tensor_parallel_size=num_gpus)
+              tensor_parallel_size=num_gpus, dtype=args.dtype)
+
     logging.info('>>>>>> model loaded')
 
     # 3 we set the sampling params
@@ -82,25 +85,24 @@ def inference(args):
     questions, answers, types = get_gsmplus()
     print(f'model: {args.model_name}\noutput_file: {args.output_file}\nckpt_path: {args.model_dir}\nsample: {len(questions)}\nnshots: {args.nshots}')
 
-    print("pretend answers are predictions")
-    fake_predictions=answers
-    # predictions = inference_vllm(args, raw_queries=questions, num_cpus=56, gpus=args.specify_your_gpus)
-    # print('size of predictions: ', len(predictions))
+    # print("pretend answers are predictions")
+    
+    predictions = inference_vllm(args, raw_queries=questions, num_cpus=56, gpus=args.specify_your_gpus)
+    print('size of predictions: ', len(predictions))
 
     outputs = []
 
-    for idx, fake_pred in enumerate(fake_predictions):
-    # for idx, output in enumerate(predictions):
-        # model_prediction = output.outputs[0].text
+    # for idx, fake_pred in enumerate(fake_predictions):
+    for idx, output in enumerate(predictions):
+        model_prediction = output.outputs[0].text
         outputs.append({
             'idx': idx,
             'question': questions[idx],
             'answer': answers[idx],
             'type': types[idx],
             'model': args.model_name,
-            'model_prediction': fake_pred,
-            'prompt': fake_pred
-            # 'prompt': output.prompt,
+            'model_prediction': model_prediction,
+            'prompt': output.prompt,
         })
 
     if os.path.exists(args.output_file):
@@ -131,7 +133,7 @@ if __name__ == '__main__':
     parser.add_argument('--sample_num', type=int, default=-1, )
     parser.add_argument('--eval_only', type=bool, default=False)
     parser.add_argument('--max_num_batched_tokens', type=int, default=2048)
-
+    parser.add_argument('--dtype', type=str, default='auto', choices=["auto", "half"])
     args = parser.parse_args()
 
     inference(args=args)
